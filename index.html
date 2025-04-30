@@ -31,11 +31,14 @@
       margin-bottom: 0.4em;
       font-size: 1.8em;
     }
-    p {
+    .subtitle {
       text-align: center;
-      margin-top: 0;
-      font-size: 0.95em;
-      color: #666;
+      font-size: 0.9em;
+      color: #888;
+      margin: 0 0 1.2em 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     textarea {
       width: 100%;
@@ -106,7 +109,7 @@
       button:hover {
         background-color: var(--hover-dark);
       }
-      p {
+      .subtitle {
         color: #aaa;
       }
     }
@@ -114,7 +117,7 @@
 </head>
 <body>
   <h2>Telegram 消息发送器</h2>
-  <p>支持 MarkdownV2 · 暗黑模式 · 动效增强 · 一键发送</p>
+  <div class="subtitle">MarkdownV2 · 暗黑模式 · 动效增强</div>
 
   <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea>
   <button onclick="sendMessage()">发送消息</button>
