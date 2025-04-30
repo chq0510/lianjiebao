@@ -124,8 +124,11 @@
     border: 1px solid #444;
   }
   textarea::placeholder {
-    color: #999 !important;
-  }
+  color: #999 !important;
+  opacity: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
   button {
     background-color: #2a6ebd;
     color: white;
@@ -176,7 +179,7 @@
     function sendText() {
       const message = document.getElementById("message").value.trim();
   const status = document.getElementById("status");
-  status.textContent = "";
+  status.textContent = "发送中...";
       status.textContent = "准备发送文字消息...\n";
 
       if (!message) {
@@ -212,7 +215,7 @@ document.getElementById("message").value = "";
       }
 
       const file = fileInput.files[0];
-  status.textContent = "";
+  status.textContent = "发送中...";
 
       const formData = new FormData();
       formData.append("chat_id", chatId);
