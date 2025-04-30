@@ -238,13 +238,8 @@ function showCelebration() {
   <h2>TelePush</h2>
   <div class="subtitle">MarkdownV2 · 暗黑模式 · 动效增强</div>
 
-  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><input type='file' id='image' hidden onchange='handleFileChange("image")' accept='image/*' style='width: 100%; padding: 10px; border-radius: 6px; background-color: #eee; border: none;'>
-  
-<div style="display: flex; flex-direction: column; gap: 10px;">
-  <label for="image" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择文件</label>
-  
-  
-<br><button onclick="sendMessage()" style="
+  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><div style="display: flex; flex-direction: column; gap: 10px;">
+  <br><button onclick="sendMessage()" style="
     width: 100%;
     padding: 14px;
     font-size: 16px;
@@ -257,7 +252,6 @@ function showCelebration() {
     transition: background-color 0.2s ease, transform 0.1s ease;
 ">发送消息</button>
 
-<div id="filenameLabel" style="font-size: 0.85em; margin-top: 5px; padding: 6px 10px; background-color: #e6f5ea; color: #2c6f49; border-radius: 6px; display: inline-block;">未选择任何文件</div>
 </div>
 <br>
 
