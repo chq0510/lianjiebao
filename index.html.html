@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>发送 Telegram 消息</title>
+</head>
+<body style="font-family:Arial,sans-serif;padding:2em;">
+    <h2>最简版 Telegram 消息发送器</h2>
+    <p>输入内容，点击发送即可。支持 MarkdownV2 语法。</p>
+
+    <textarea id="msg" rows="18" cols="60" placeholder="请输入要发送的内容..."></textarea>
+    <br><br>
+    <button onclick="sendMessage()" style="padding:10px 20px;font-size:16px;">发送消息</button>
+
+    <p id="status" style="margin-top:1em;color:green;"></p>
+
+    <script>
+        function sendMessage() {
+            const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
+            const chat_id = "-1002592111685";
+            const text = document.getElementById("msg").value;
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(text)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").textContent = data.ok
+                    ? "✅ 发送成功！"
+                    : "❌ 发送失败：" + data.description;
+            })
+            .catch(error => {
+                document.getElementById("status").textContent = "❌ 请求出错：" + error;
+            });
+        }
+    </script>
+</body>
+</html>
