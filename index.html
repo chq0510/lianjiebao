@@ -45,8 +45,8 @@ function clearFields() {
 }
 
 // 插入预览确认逻辑（发送前弹窗确认）
-const originalSendMessage = sendMessage;
-sendMessage = function() {
+
+function sendMessage() {
   const text = document.getElementById("msg").value;
   const imageFile = document.getElementById("image").files[0];
   const docFile = document.getElementById("document").files[0];
@@ -62,7 +62,7 @@ sendMessage = function() {
 
   const confirmSend = confirm("请确认发送以下内容：\n\n" + preview);
   if (confirmSend) {
-    originalSendMessage();
+    doSend();
   }
 };
 </script>
@@ -180,7 +180,26 @@ sendMessage = function() {
         color: #aaa;
       }
     }
-  </style>
+  
+// 庆祝动画（简单彩带效果）
+function showCelebration() {
+  const confetti = document.createElement("div");
+  confetti.textContent = "🎉";
+  confetti.style.position = "fixed";
+  confetti.style.fontSize = "40px";
+  confetti.style.left = Math.random() * 90 + "%";
+  confetti.style.top = "10px";
+  confetti.style.animation = "fall 1s ease-out forwards";
+  document.body.appendChild(confetti);
+  setTimeout(() => confetti.remove(), 1000);
+}
+
+@keyframes fall {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(200px); opacity: 0; }
+}
+
+</style>
 </head>
 <body>
   <h2>TelePush</h2>
@@ -191,22 +210,37 @@ sendMessage = function() {
 <div style="display: flex; flex-direction: column; gap: 10px;">
   <label for="image" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择图片</label>
   <label for="document" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择文件</label>
-  <div style="font-size: 0.9em; color: #666;" id="filenameLabel">未选择任何文件</div>
+  <div id="filenameLabel" style="font-size: 0.85em; margin-top: 5px; padding: 6px 10px; background-color: #e6f5ea; color: #2c6f49; border-radius: 6px; display: inline-block;">未选择任何文件</div>
 </div>
 <br>
 
 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
   <button onclick="sendMessage()" style="flex:1;">发送消息</button>
-  <button onclick="clearFields()" style="flex:1;background-color: #aaa;">清空内容</button>
+  
+<button onclick="clearFields()" title="清空" style="
+    background-color: transparent;
+    border: none;
+    color: #888;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 10px;
+    float: right;
+    margin-top: -30px;
+">🗑️</button>
+
 </div>
 
 
 
-  <p id="status"></p>
+  
+<div id="progressBar" style="display:none; height: 4px; width: 0%; background-color: #0088cc; border-radius: 4px; transition: width 0.5s;"></div>
+<p id="status" style="margin-top: 10px;"></p>
+
 
   <script>
     
-function sendMessage() {
+function doSend() {
     const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
     const chat_id = "-1002592111685";
     const text = document.getElementById("msg").value;
@@ -214,7 +248,13 @@ function sendMessage() {
     const imageInput = document.getElementById("image");
     const imageFile = imageInput.files[0];
 
-    status.textContent = "发送中...";
+    
+status.textContent = "发送中...";
+const bar = document.getElementById("progressBar");
+bar.style.display = "block";
+bar.style.width = "20%";
+setTimeout(() => bar.style.width = "80%", 300);
+
     status.className = "fade-in";
 
     const documentFile = document.getElementById("document").files[0];
@@ -234,16 +274,20 @@ function sendMessage() {
             status.className = "fade-in";
             
 if (data.ok) {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "✅ 发送成功！";
+  showCelebration();
   clearFields();
 } else {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "❌ 发送失败：" + data.description;
 }
  "✅ 图片发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
-            status.textContent = "❌ 请求出错：" + error;
+            document.getElementById('progressBar').style.display = 'none';
+  status.textContent = "❌ 请求出错：" + error;
         });
     } else if (documentFile) {
         const formData = new FormData();
@@ -259,16 +303,20 @@ if (data.ok) {
             status.className = "fade-in";
             
 if (data.ok) {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "✅ 发送成功！";
+  showCelebration();
   clearFields();
 } else {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "❌ 发送失败：" + data.description;
 }
  "✅ 文件发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
-            status.textContent = "❌ 请求出错：" + error;
+            document.getElementById('progressBar').style.display = 'none';
+  status.textContent = "❌ 请求出错：" + error;
         });
     } else {
         fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -283,16 +331,20 @@ if (data.ok) {
             status.className = "fade-in";
             
 if (data.ok) {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "✅ 发送成功！";
+  showCelebration();
   clearFields();
 } else {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "❌ 发送失败：" + data.description;
 }
  "✅ 发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
-            status.textContent = "❌ 请求出错：" + error;
+            document.getElementById('progressBar').style.display = 'none';
+  status.textContent = "❌ 请求出错：" + error;
         });
     }
 }
@@ -301,7 +353,13 @@ if (data.ok) {
       const chat_id = "-1002592111685";
       const text = document.getElementById("msg").value;
       const status = document.getElementById("status");
-      status.textContent = "发送中...";
+      
+status.textContent = "发送中...";
+const bar = document.getElementById("progressBar");
+bar.style.display = "block";
+bar.style.width = "20%";
+setTimeout(() => bar.style.width = "80%", 300);
+
       status.className = "fade-in";
 
       fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -316,16 +374,20 @@ if (data.ok) {
           status.className = "fade-in";
           
 if (data.ok) {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "✅ 发送成功！";
+  showCelebration();
   clearFields();
 } else {
+  document.getElementById('progressBar').style.display = 'none';
   status.textContent = "❌ 发送失败：" + data.description;
 }
  "✅ 发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch((error) => {
           status.className = "fade-in";
-          status.textContent = "❌ 请求出错：" + error;
+          document.getElementById('progressBar').style.display = 'none';
+  status.textContent = "❌ 请求出错：" + error;
         });
     }
   
@@ -366,8 +428,8 @@ function clearFields() {
 }
 
 // 插入预览确认逻辑（发送前弹窗确认）
-const originalSendMessage = sendMessage;
-sendMessage = function() {
+
+function sendMessage() {
   const text = document.getElementById("msg").value;
   const imageFile = document.getElementById("image").files[0];
   const docFile = document.getElementById("document").files[0];
@@ -383,7 +445,7 @@ sendMessage = function() {
 
   const confirmSend = confirm("请确认发送以下内容：\n\n" + preview);
   if (confirmSend) {
-    originalSendMessage();
+    doSend();
   }
 };
 </script>
