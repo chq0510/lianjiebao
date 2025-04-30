@@ -124,14 +124,8 @@
     border: 1px solid #444;
   }
   textarea::placeholder {
-  color: #999 !important;
-  opacity: 1;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: block;
-  width: 100%;
-  line-height: 1.4;
-}
+    color: #999 !important;
+  }
   button {
     background-color: #2a6ebd;
     color: white;
@@ -182,7 +176,7 @@
     function sendText() {
       const message = document.getElementById("message").value.trim();
   const status = document.getElementById("status");
-  status.textContent = "发送中...";
+  status.textContent = "";
       status.textContent = "准备发送文字消息...\n";
 
       if (!message) {
@@ -201,8 +195,10 @@
       .then(res => res.json())
       .then(data => {
         status.textContent += "\n响应：\n" + JSON.stringify(data, null, 2);
-document.getElementById("message").value = "";
-setTimeout(() => {}, 50);
+const textarea = document.getElementById("message");
+textarea.value = "";
+textarea.style.display = "none";
+setTimeout(() => { textarea.style.display = "block"; }, 50);
       })
       .catch(err => {
         status.textContent += "\n出错：\n" + err;
@@ -219,7 +215,7 @@ setTimeout(() => {}, 50);
       }
 
       const file = fileInput.files[0];
-  status.textContent = "发送中...";
+  status.textContent = "";
 
       const formData = new FormData();
       formData.append("chat_id", chatId);
@@ -234,7 +230,6 @@ setTimeout(() => {}, 50);
         status.textContent += "\n上传结果：\n" + JSON.stringify(data, null, 2);
 document.getElementById("fileInput").value = "";
 document.getElementById("fileNameDisplay").textContent = "未选择任何文件";
-document.getElementById("status").textContent = "";
       })
       .catch(err => {
         status.textContent += "\n上传出错：\n" + err;
