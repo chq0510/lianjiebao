@@ -168,7 +168,7 @@
     <button id="sendFileBtn">发送文件</button>
   </div>
 
-  <div id="status" style="display:none;">状态将在此显示</div>
+  <div id="status">状态将在此显示</div>
 
   <script>
     const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
@@ -183,7 +183,7 @@
     function sendText() {
       const message = document.getElementById("message").value.trim();
   const status = document.getElementById("status");
-  status.textContent = "";
+  status.textContent = "发送中...";
       status.textContent = "准备发送文字消息...\n";
 
       if (!message) {
@@ -222,7 +222,7 @@ setTimeout(() => { textarea.style.display = "block"; }, 50);
       }
 
       const file = fileInput.files[0];
-  status.textContent = "";
+  status.textContent = "发送中...";
 
       const formData = new FormData();
       formData.append("chat_id", chatId);
@@ -271,7 +271,9 @@ function showSuccessAnimation() {
   setTimeout(() => document.body.removeChild(el), 1600);
 }
 
-function clearStatus() { /* 状态栏已禁用 */ }, 10);
+function clearStatus() {
+  const status = document.getElementById("status");
+  status.textContent = "发送成功！";
 }
 </script>
 </body>
