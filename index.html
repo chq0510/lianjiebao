@@ -4,8 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <title>TelePush</title>
-  <link rel="manifest" href="manifest.json">
-<script src="service-worker.js"></script>
+  
+<link rel="manifest" href="manifest.json">
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
@@ -232,9 +237,6 @@ setTimeout(() => { textarea.style.display = "block"; }, 50);
         status.textContent += "\n上传结果：\n" + JSON.stringify(data, null, 2);
 document.getElementById("fileInput").value = "";
 document.getElementById("fileNameDisplay").textContent = "未选择任何文件";
-const status = document.getElementById("status");
-status.innerHTML = "&nbsp;";
-setTimeout(() => { status.textContent = ""; }, 10);
       })
       .catch(err => {
         status.textContent += "\n上传出错：\n" + err;
@@ -267,6 +269,12 @@ function showSuccessAnimation() {
     el.style.opacity = "0";
   }, 10);
   setTimeout(() => document.body.removeChild(el), 1600);
+}
+
+function clearStatus() {
+  const status = document.getElementById("status");
+  status.innerHTML = "&nbsp;";
+  setTimeout(() => { status.textContent = ""; }, 10);
 }
 </script>
 </body>
