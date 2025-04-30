@@ -110,7 +110,40 @@
       white-space: pre-wrap;
       color: #444;
     }
-  </style>
+  
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #111;
+    color: #eee;
+  }
+  textarea {
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #444;
+  }
+  textarea::placeholder {
+    color: #999 !important;
+  }
+  button {
+    background-color: #2a6ebd;
+    color: white;
+  }
+  button:hover {
+    background-color: #215ca3;
+  }
+  .select-label {
+    background-color: #2a6ebd;
+  }
+  .filename {
+    background-color: #1f4023;
+    color: #bbf5c3;
+  }
+  #status {
+    color: #ccc;
+  }
+}
+
+</style>
 </head>
 <body>
   <h1>TelePush</h1>
