@@ -1,3 +1,8 @@
-# Telegram Sender
+# Telegram Sender (ALL-IN-ONE)
 
-最简版消息发送器，仅保留 index.html，用于 Telegram Bot MarkdownV2 消息发送。
+最终版包含：
+- 自动暗黑模式
+- 美化按钮输入框
+- 动效反馈
+- Telegram 图标 favicon
+- 支持 MarkdownV2 消息发送
