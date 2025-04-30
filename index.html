@@ -159,6 +159,7 @@
       .then(res => res.json())
       .then(data => {
         status.textContent += "\n响应：\n" + JSON.stringify(data, null, 2);
+document.getElementById("message").value = "";
       })
       .catch(err => {
         status.textContent += "\n出错：\n" + err;
@@ -188,6 +189,8 @@
       .then(res => res.json())
       .then(data => {
         status.textContent += "\n上传结果：\n" + JSON.stringify(data, null, 2);
+document.getElementById("fileInput").value = "";
+document.getElementById("fileNameDisplay").textContent = "未选择任何文件";
       })
       .catch(err => {
         status.textContent += "\n上传出错：\n" + err;
@@ -203,6 +206,24 @@
         fileNameDisplay.textContent = "未选择任何文件";
       }
     }
-  </script>
+  
+function showSuccessAnimation() {
+  const emoji = "🎉";
+  const el = document.createElement("div");
+  el.textContent = emoji;
+  el.style.position = "fixed";
+  el.style.fontSize = "2.5rem";
+  el.style.left = Math.random() * 90 + "%";
+  el.style.top = "-2rem";
+  el.style.transition = "top 1.5s ease-out, opacity 1.5s";
+  el.style.zIndex = 9999;
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.top = Math.random() * 60 + 20 + "%";
+    el.style.opacity = "0";
+  }, 10);
+  setTimeout(() => document.body.removeChild(el), 1600);
+}
+</script>
 </body>
 </html>
