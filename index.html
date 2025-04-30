@@ -46,7 +46,7 @@ function clearFields() {
 
 // 插入预览确认逻辑（发送前弹窗确认）
 
-function sendMessage() {
+function doSend() {
   const text = document.getElementById("msg").value;
   const imageFile = document.getElementById("image").files[0];
   const docFile = document.getElementById("document").files[0];
@@ -210,26 +210,25 @@ function showCelebration() {
 <div style="display: flex; flex-direction: column; gap: 10px;">
   <label for="image" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择图片</label>
   <label for="document" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择文件</label>
-  <div id="filenameLabel" style="font-size: 0.85em; margin-top: 5px; padding: 6px 10px; background-color: #e6f5ea; color: #2c6f49; border-radius: 6px; display: inline-block;">未选择任何文件</div>
+  
+<br><button onclick="sendMessage()" style="
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background-color: var(--primary-light);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+">发送消息</button>
+
+<div id="filenameLabel" style="font-size: 0.85em; margin-top: 5px; padding: 6px 10px; background-color: #e6f5ea; color: #2c6f49; border-radius: 6px; display: inline-block;">未选择任何文件</div>
 </div>
 <br>
 
-<div style="display: flex; gap: 10px; margin-bottom: 10px;">
-  <button onclick="sendMessage()" style="flex:1;">发送消息</button>
-  
-<button onclick="clearFields()" title="清空" style="
-    background-color: transparent;
-    border: none;
-    color: #888;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 4px 10px;
-    float: right;
-    margin-top: -30px;
-">🗑️</button>
 
-</div>
 
 
 
@@ -429,7 +428,7 @@ function clearFields() {
 
 // 插入预览确认逻辑（发送前弹窗确认）
 
-function sendMessage() {
+function doSend() {
   const text = document.getElementById("msg").value;
   const imageFile = document.getElementById("image").files[0];
   const docFile = document.getElementById("document").files[0];
