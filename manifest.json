@@ -1,0 +1,17 @@
+
+{
+  "name": "TelePush",
+  "short_name": "TelePush",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#1f3b56",
+  "description": "简洁美观的 Telegram 消息推送工具",
+  "icons": [
+    {
+      "src": "icons8-telegram-app-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
