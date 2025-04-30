@@ -1,8 +1,5 @@
-# TelePush 全功能版
+# TelePush UI 美化版
 
-支持：
-- 文本消息（MarkdownV2）
-- 图片上传（sendPhoto）
-- 文件发送（sendDocument）
-
-UI 适配暗黑 · 主屏图标 · 完整 PWA 支持
+- 美化文件/图片上传按钮
+- 显示所选文件名
+- 圆角一致风格
