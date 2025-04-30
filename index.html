@@ -125,13 +125,83 @@
   <h2>TelePush</h2>
   <div class="subtitle">MarkdownV2 · 暗黑模式 · 动效增强</div>
 
-  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea>
+  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><input type='file' id='image' accept='image/*' style='width: 100%; padding: 10px; border-radius: 6px; background-color: #eee; border: none;'>
   <button onclick="sendMessage()">发送消息</button>
 
   <p id="status"></p>
 
   <script>
-    function sendMessage() {
+    
+function sendMessage() {
+    const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
+    const chat_id = "-1002592111685";
+    const text = document.getElementById("msg").value;
+    const status = document.getElementById("status");
+    const imageInput = document.getElementById("image");
+    const imageFile = imageInput.files[0];
+
+    status.textContent = "发送中...";
+    status.className = "fade-in";
+
+    const documentFile = document.getElementById("document").files[0];
+    if (imageFile) {
+        const formData = new FormData();
+        formData.append("chat_id", chat_id);
+        formData.append("photo", imageFile);
+        if (text) formData.append("caption", text);
+        if (text) formData.append("caption", text);
+
+        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            status.className = "fade-in";
+            status.textContent = data.ok ? "✅ 图片发送成功！" : "❌ 发送失败：" + data.description;
+        })
+        .catch(error => {
+            status.className = "fade-in";
+            status.textContent = "❌ 请求出错：" + error;
+        });
+    } else if (documentFile) {
+        const formData = new FormData();
+        formData.append("chat_id", chat_id);
+        formData.append("document", documentFile);
+        if (text) formData.append("caption", text);
+        fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            status.className = "fade-in";
+            status.textContent = data.ok ? "✅ 文件发送成功！" : "❌ 发送失败：" + data.description;
+        })
+        .catch(error => {
+            status.className = "fade-in";
+            status.textContent = "❌ 请求出错：" + error;
+        });
+    } else {
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(text)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            status.className = "fade-in";
+            status.textContent = data.ok ? "✅ 发送成功！" : "❌ 发送失败：" + data.description;
+        })
+        .catch(error => {
+            status.className = "fade-in";
+            status.textContent = "❌ 请求出错：" + error;
+        });
+    }
+}
+
       const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
       const chat_id = "-1002592111685";
       const text = document.getElementById("msg").value;

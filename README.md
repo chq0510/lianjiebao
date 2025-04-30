@@ -1,5 +1,8 @@
-# TelePush
+# TelePush 全功能版
 
-终极美化版 · 暗黑柔蓝按钮 · 新图标 · 更好听的名字。
+支持：
+- 文本消息（MarkdownV2）
+- 图片上传（sendPhoto）
+- 文件发送（sendDocument）
 
-体验 Telegram 消息发送器最优形态。
+UI 适配暗黑 · 主屏图标 · 完整 PWA 支持
