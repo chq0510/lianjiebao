@@ -183,7 +183,7 @@
     function sendText() {
       const message = document.getElementById("message").value.trim();
   const status = document.getElementById("status");
-  status.textContent = "发送中...";
+  status.textContent = "正在发送文字...";
       status.textContent = "准备发送文字消息...\n";
 
       if (!message) {
@@ -273,7 +273,7 @@ function showSuccessAnimation() {
 
 function clearStatus() {
   const status = document.getElementById("status");
-  status.textContent = "发送成功！";
+  status.textContent = "文字发送成功！";
 }
 </script>
 </body>
