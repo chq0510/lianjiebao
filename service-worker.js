@@ -1,16 +1,8 @@
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open("tg-sender-cache").then(cache => {
-      return cache.addAll(["index.html"]);
-    })
-  );
+self.addEventListener('install', function(event) {
+    console.log('[ServiceWorker] Install');
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+self.addEventListener('fetch', function(event) {
+    // 默认直接走网络，保持简单
 });

@@ -3,466 +3,87 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>链接宝 · 美观+可用版</title>
+    <title>链接宝 · 纯净可用版</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-    :root {
-      --bg-light: #ffffff;
-      --bg-dark: #111111;
-      --text-light: #222222;
-      --text-dark: #eeeeee;
-      --primary-light: #1f3b56;
-      --primary-dark: #229ed9;
-      --hover-light: #2a4e73;
-      --hover-dark: #0d8dd4;
-    }
-    body {
-      font-family: "Segoe UI", "PingFang SC", sans-serif;
-      padding: 2em;
-      max-width: 640px;
-      margin: auto;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 0.4em;
-      font-size: 1.8em;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 0.9em;
-      color: #888;
-      margin: 0 0 1.2em 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    textarea {
-      width: 100%;
-      font-size: 16px;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      resize: vertical;
-      box-sizing: border-box;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.2s ease;
-    }
-    textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px #2a4e73;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      background-color: var(--primary-light);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      margin-top: 12px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-    }
-    button:hover {
-      background-color: var(--hover-light);
-    }
-    button:active {
-      transform: scale(0.97);
-    }
-    #status {
-      margin-top: 1em;
-      text-align: center;
-      font-weight: bold;
-      min-height: 1.5em;
-      transition: opacity 0.3s ease;
-    }
-    .fade-in {
-      animation: fadein 0.4s ease;
-    }
-    @keyframes fadein {
-      from {
-        opacity: 0;
-        transform: translateY(-5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: var(--bg-dark);
-        color: var(--text-dark);
-      }
-      textarea {
-        background-color: #1e1e1e;
-        color: var(--text-dark);
-        border: 1px solid #444;
-      }
-      button {
-        background-color: var(--primary-dark);
-      }
-      button:hover {
-        background-color: var(--hover-dark);
-      }
-      .subtitle {
-        color: #aaa;
-      }
-    }
-  
-// 庆祝动画（简单彩带效果）
-function showCelebration() {
-  const confetti = document.createElement("div");
-  confetti.textContent = "🎉";
-  confetti.style.position = "fixed";
-  confetti.style.fontSize = "40px";
-  confetti.style.left = Math.random() * 90 + "%";
-  confetti.style.top = "10px";
-  confetti.style.animation = "fall 1s ease-out forwards";
-  document.body.appendChild(confetti);
-  setTimeout(() => confetti.remove(), 1000);
-}
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2em;
+        }
+        h1 {
+            margin-bottom: 1em;
+            font-size: 1.6em;
+        }
+        textarea {
+            width: 100%;
+            max-width: 500px;
+            min-height: 120px;
+            padding: 1em;
+            border-radius: 10px;
+            border: none;
+            font-size: 1em;
+            background-color: #1e1e1e;
+            color: #fff;
+            resize: vertical;
+        }
+        button {
+            margin-top: 1em;
+            padding: 0.75em 2em;
+            font-size: 1.1em;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #43a047;
+        }
+        #status {
+            margin-top: 2em;
+            background-color: #1c1c1c;
+            padding: 1em;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            white-space: pre-wrap;
+        }
+    </style>
 
-@keyframes fall {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(200px); opacity: 0; }
+<link rel="manifest" href="manifest.json">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(function(reg) {
+      console.log("Service Worker 注册成功:", reg.scope);
+    }).catch(function(error) {
+      console.log("Service Worker 注册失败:", error);
+    });
 }
-
-</style>
+</script>
 </head>
 <body>
+    <h1>发送到频道：收藏</h1>
+    <textarea id="message" placeholder="请输入消息内容..."></textarea>
+    <button id="sendBtn">发送</button>
+    <div id="status">状态将在此显示</div>
 
-  <h2>TelePush</h2>
-  <div class="subtitle">MarkdownV2 · 暗黑模式 · 动效增强</div>
-
-  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><input type='file' id='image' hidden onchange='handleFileChange("image")' accept='image/*' style='width: 100%; padding: 10px; border-radius: 6px; background-color: #eee; border: none;'>
-  
-<div style="display: flex; flex-direction: column; gap: 10px;">
-  <label for="image" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择文件</label>
-  
-  
-<br><button onclick="sendMessage()" style="
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    background-color: var(--primary-light);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    margin-top: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-">发送消息</button>
-
-<div id="filenameLabel" style="font-size: 0.85em; margin-top: 5px; padding: 6px 10px; background-color: #e6f5ea; color: #2c6f49; border-radius: 6px; display: inline-block;">未选择任何文件</div>
-</div>
-<br>
-
-
-
-
-
-  
-<div id="progressBar" style="display:none; height: 4px; width: 0%; background-color: #0088cc; border-radius: 4px; transition: width 0.5s;"></div>
-<p id="status" style="margin-top: 10px;"></p>
-
-
-  <script>
-    
-
-function doSend() {
-  const msg = document.getElementById("msg").value;
-  const status = document.getElementById("status");
-  const bar = document.getElementById("progressBar");
-  status.textContent = "发送中...";
-  bar.style.display = "block";
-  bar.style.width = "20%";
-  setTimeout(() => bar.style.width = "80%", 300);
-
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(msg)}`
-  })
-  .then(res => res.json())
-  .then(data => {
-    bar.style.display = "none";
-    console.log("Telegram 响应：", data);
-    if (data.ok) {
-      status.textContent = "✅ 发送成功";
-      showCelebration();
-      clearFields();
-    } else {
-      status.textContent = "❌ 发送失败：" + data.description;
-    }
-  })
-  .catch(err => {
-    bar.style.display = "none";
-    status.textContent = "❌ 请求出错：" + err;
-    console.error("请求出错：", err);
-  });
-}
-
-    const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
-    const chat_id = "-1002592111685";
-    const text = document.getElementById("msg").value;
-    const status = document.getElementById("status");
-    const imageInput = document.getElementById("image");
-    const imageFile = imageInput.files[0];
-
-    
-status.textContent = "发送中...";
-const bar = document.getElementById("progressBar");
-bar.style.display = "block";
-bar.style.width = "20%";
-setTimeout(() => bar.style.width = "80%", 300);
-
-    status.className = "fade-in";
-
-    const documentFile = document.getElementById("document").files[0];
-    if (imageFile) {
-        const formData = new FormData();
-        formData.append("chat_id", chat_id);
-        formData.append("photo", imageFile);
-        if (text) formData.append("caption", text);
-        if (text) formData.append("caption", text);
-
-        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            status.className = "fade-in";
-            
-if (data.ok) {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "✅ 发送成功！";
-  showCelebration();
-  clearFields();
-} else {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 发送失败：" + data.description;
-}
- "✅ 图片发送成功！" : "❌ 发送失败：" + data.description;
-        })
-        .catch(error => {
-            status.className = "fade-in";
-            document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 请求出错：" + error;
-        });
-    } else if (documentFile) {
-        const formData = new FormData();
-        formData.append("chat_id", chat_id);
-        formData.append("document", documentFile);
-        if (text) formData.append("caption", text);
-        fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            status.className = "fade-in";
-            
-if (data.ok) {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "✅ 发送成功！";
-  showCelebration();
-  clearFields();
-} else {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 发送失败：" + data.description;
-}
- "✅ 文件发送成功！" : "❌ 发送失败：" + data.description;
-        })
-        .catch(error => {
-            status.className = "fade-in";
-            document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 请求出错：" + error;
-        });
-    } else {
-        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(text)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            status.className = "fade-in";
-            
-if (data.ok) {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "✅ 发送成功！";
-  showCelebration();
-  clearFields();
-} else {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 发送失败：" + data.description;
-}
- "✅ 发送成功！" : "❌ 发送失败：" + data.description;
-        })
-        .catch(error => {
-            status.className = "fade-in";
-            document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 请求出错：" + error;
-        });
-    }
-}
-
-      const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
-      const chat_id = "-1002592111685";
-      const text = document.getElementById("msg").value;
-      const status = document.getElementById("status");
-      
-status.textContent = "发送中...";
-const bar = document.getElementById("progressBar");
-bar.style.display = "block";
-bar.style.width = "20%";
-setTimeout(() => bar.style.width = "80%", 300);
-
-      status.className = "fade-in";
-
-      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(text)}`,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          status.className = "fade-in";
-          
-if (data.ok) {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "✅ 发送成功！";
-  showCelebration();
-  clearFields();
-} else {
-  document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 发送失败：" + data.description;
-}
- "✅ 发送成功！" : "❌ 发送失败：" + data.description;
-        })
-        .catch((error) => {
-          status.className = "fade-in";
-          document.getElementById('progressBar').style.display = 'none';
-  status.textContent = "❌ 请求出错：" + error;
-        });
-    }
-  
-// 显示所选文件名
-document.getElementById("image").addEventListener("change", function() {
-  const file = this.files[0];
-  if (file) {
-    document.getElementById("filenameLabel").textContent = "已选图片：" + file.name;
-  }
-});
-document.getElementById("document").addEventListener("change", function() {
-  const file = this.files[0];
-  if (file) {
-    document.getElementById("filenameLabel").textContent = "已选文件：" + file.name;
-  }
-});
-
-function handleFileChange(type) {
-  const fileInput = document.getElementById(type);
-  const file = fileInput.files[0];
-  if (file) {
-    document.getElementById("filenameLabel").textContent = "已选" + (type === "image" ? "图片：" : "文件：") + file.name;
-  }
-}
-
-document.querySelector("label[for='image']").addEventListener("click", function() {
-  document.getElementById("image").click();
-});
-document.querySelector("label[for='document']").addEventListener("click", function() {
-  document.getElementById("document").click();
-});
-
-function clearFields() {
-  document.getElementById("msg").value = "";
-  document.getElementById("image").value = "";
-  document.getElementById("document").value = "";
-  document.getElementById("filenameLabel").textContent = "未选择任何文件";
-}
-
-// 插入预览确认逻辑（发送前弹窗确认）
-
-
-function doSend() {
-  const msg = document.getElementById("msg").value;
-  const status = document.getElementById("status");
-  const bar = document.getElementById("progressBar");
-  status.textContent = "发送中...";
-  bar.style.display = "block";
-  bar.style.width = "20%";
-  setTimeout(() => bar.style.width = "80%", 300);
-
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `chat_id=${encodeURIComponent(chat_id)}&parse_mode=MarkdownV2&text=${encodeURIComponent(msg)}`
-  })
-  .then(res => res.json())
-  .then(data => {
-    bar.style.display = "none";
-    console.log("Telegram 响应：", data);
-    if (data.ok) {
-      status.textContent = "✅ 发送成功";
-      showCelebration();
-      clearFields();
-    } else {
-      status.textContent = "❌ 发送失败：" + data.description;
-    }
-  })
-  .catch(err => {
-    bar.style.display = "none";
-    status.textContent = "❌ 请求出错：" + err;
-    console.error("请求出错：", err);
-  });
-}
-
-  const text = document.getElementById("msg").value;
-  const imageFile = document.getElementById("image").files[0];
-  const docFile = document.getElementById("document").files[0];
-  let preview = "";
-  if (text) preview += `【文字】\n${text}\n\n`;
-  if (imageFile) preview += `【图片】${imageFile.name}\n`;
-  if (docFile) preview += `【文件】${docFile.name}\n`;
-
-  if (!preview) {
-    alert("没有填写任何内容！");
-    return;
-  }
-
-  const confirmSend = confirm("请确认发送以下内容：\n\n" + preview);
-  if (confirmSend) {
-    doSend();
-  }
-};
-</script>
-
-
-
-
-<script>
-
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const button = document.getElementById("sendBtn");
-            if (button) {
-                button.addEventListener("click", send);
-            }
+            document.getElementById("sendBtn").addEventListener("click", send);
         });
 
         function send() {
-            const message = document.getElementById('message').value.trim();
-            const status = document.getElementById('status');
+            const message = document.getElementById("message").value.trim();
+            const status = document.getElementById("status");
             status.textContent = "准备发送...\n";
 
             if (!message) {
@@ -480,8 +101,8 @@ function doSend() {
             status.textContent += "请求体: " + JSON.stringify(payload, null, 2) + "\n";
 
             fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             })
             .then(res => res.json())
@@ -492,7 +113,6 @@ function doSend() {
                 status.textContent += "\n出错：\n" + err;
             });
         }
-    
-</script>
+    </script>
 </body>
 </html>
