@@ -21,7 +21,53 @@ document.getElementById("document").addEventListener("change", function() {
     document.getElementById("filenameLabel").textContent = "已选文件：" + file.name;
   }
 });
+
+function handleFileChange(type) {
+  const fileInput = document.getElementById(type);
+  const file = fileInput.files[0];
+  if (file) {
+    document.getElementById("filenameLabel").textContent = "已选" + (type === "image" ? "图片：" : "文件：") + file.name;
+  }
+}
+
+document.querySelector("label[for='image']").addEventListener("click", function() {
+  document.getElementById("image").click();
+});
+document.querySelector("label[for='document']").addEventListener("click", function() {
+  document.getElementById("document").click();
+});
+
+function clearFields() {
+  document.getElementById("msg").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("document").value = "";
+  document.getElementById("filenameLabel").textContent = "未选择任何文件";
+}
+
+// 插入预览确认逻辑（发送前弹窗确认）
+const originalSendMessage = sendMessage;
+sendMessage = function() {
+  const text = document.getElementById("msg").value;
+  const imageFile = document.getElementById("image").files[0];
+  const docFile = document.getElementById("document").files[0];
+  let preview = "";
+  if (text) preview += `【文字】\n${text}\n\n`;
+  if (imageFile) preview += `【图片】${imageFile.name}\n`;
+  if (docFile) preview += `【文件】${docFile.name}\n`;
+
+  if (!preview) {
+    alert("没有填写任何内容！");
+    return;
+  }
+
+  const confirmSend = confirm("请确认发送以下内容：\n\n" + preview);
+  if (confirmSend) {
+    originalSendMessage();
+  }
+};
 </script>
+
+
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -140,7 +186,7 @@ document.getElementById("document").addEventListener("change", function() {
   <h2>TelePush</h2>
   <div class="subtitle">MarkdownV2 · 暗黑模式 · 动效增强</div>
 
-  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><input type='file' id='image' hidden accept='image/*' style='width: 100%; padding: 10px; border-radius: 6px; background-color: #eee; border: none;'>
+  <textarea id="msg" rows="10" placeholder="请输入要发送的内容..."></textarea><br><br><input type='file' id='image' hidden onchange='handleFileChange("image")' accept='image/*' style='width: 100%; padding: 10px; border-radius: 6px; background-color: #eee; border: none;'>
   
 <div style="display: flex; flex-direction: column; gap: 10px;">
   <label for="image" style="background-color: var(--primary-light); color: white; padding: 10px; text-align: center; border-radius: 6px; cursor: pointer;">选择图片</label>
@@ -148,7 +194,12 @@ document.getElementById("document").addEventListener("change", function() {
   <div style="font-size: 0.9em; color: #666;" id="filenameLabel">未选择任何文件</div>
 </div>
 <br>
-<button onclick="sendMessage()">发送消息</button>
+
+<div style="display: flex; gap: 10px; margin-bottom: 10px;">
+  <button onclick="sendMessage()" style="flex:1;">发送消息</button>
+  <button onclick="clearFields()" style="flex:1;background-color: #aaa;">清空内容</button>
+</div>
+
 
 
   <p id="status"></p>
@@ -181,7 +232,14 @@ function sendMessage() {
         .then(response => response.json())
         .then(data => {
             status.className = "fade-in";
-            status.textContent = data.ok ? "✅ 图片发送成功！" : "❌ 发送失败：" + data.description;
+            
+if (data.ok) {
+  status.textContent = "✅ 发送成功！";
+  clearFields();
+} else {
+  status.textContent = "❌ 发送失败：" + data.description;
+}
+ "✅ 图片发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
@@ -199,7 +257,14 @@ function sendMessage() {
         .then(response => response.json())
         .then(data => {
             status.className = "fade-in";
-            status.textContent = data.ok ? "✅ 文件发送成功！" : "❌ 发送失败：" + data.description;
+            
+if (data.ok) {
+  status.textContent = "✅ 发送成功！";
+  clearFields();
+} else {
+  status.textContent = "❌ 发送失败：" + data.description;
+}
+ "✅ 文件发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
@@ -216,7 +281,14 @@ function sendMessage() {
         .then(response => response.json())
         .then(data => {
             status.className = "fade-in";
-            status.textContent = data.ok ? "✅ 发送成功！" : "❌ 发送失败：" + data.description;
+            
+if (data.ok) {
+  status.textContent = "✅ 发送成功！";
+  clearFields();
+} else {
+  status.textContent = "❌ 发送失败：" + data.description;
+}
+ "✅ 发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch(error => {
             status.className = "fade-in";
@@ -242,7 +314,14 @@ function sendMessage() {
         .then((response) => response.json())
         .then((data) => {
           status.className = "fade-in";
-          status.textContent = data.ok ? "✅ 发送成功！" : "❌ 发送失败：" + data.description;
+          
+if (data.ok) {
+  status.textContent = "✅ 发送成功！";
+  clearFields();
+} else {
+  status.textContent = "❌ 发送失败：" + data.description;
+}
+ "✅ 发送成功！" : "❌ 发送失败：" + data.description;
         })
         .catch((error) => {
           status.className = "fade-in";
@@ -263,7 +342,53 @@ document.getElementById("document").addEventListener("change", function() {
     document.getElementById("filenameLabel").textContent = "已选文件：" + file.name;
   }
 });
+
+function handleFileChange(type) {
+  const fileInput = document.getElementById(type);
+  const file = fileInput.files[0];
+  if (file) {
+    document.getElementById("filenameLabel").textContent = "已选" + (type === "image" ? "图片：" : "文件：") + file.name;
+  }
+}
+
+document.querySelector("label[for='image']").addEventListener("click", function() {
+  document.getElementById("image").click();
+});
+document.querySelector("label[for='document']").addEventListener("click", function() {
+  document.getElementById("document").click();
+});
+
+function clearFields() {
+  document.getElementById("msg").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("document").value = "";
+  document.getElementById("filenameLabel").textContent = "未选择任何文件";
+}
+
+// 插入预览确认逻辑（发送前弹窗确认）
+const originalSendMessage = sendMessage;
+sendMessage = function() {
+  const text = document.getElementById("msg").value;
+  const imageFile = document.getElementById("image").files[0];
+  const docFile = document.getElementById("document").files[0];
+  let preview = "";
+  if (text) preview += `【文字】\n${text}\n\n`;
+  if (imageFile) preview += `【图片】${imageFile.name}\n`;
+  if (docFile) preview += `【文件】${docFile.name}\n`;
+
+  if (!preview) {
+    alert("没有填写任何内容！");
+    return;
+  }
+
+  const confirmSend = confirm("请确认发送以下内容：\n\n" + preview);
+  if (confirmSend) {
+    originalSendMessage();
+  }
+};
 </script>
+
+
 
 </body>
 </html>
