@@ -3,7 +3,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>链接宝 · 纯净可用版</title>
+    <title>TelePush</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -56,7 +56,45 @@
             font-size: 0.95em;
             white-space: pre-wrap;
         }
-    </style>
+    
+
+
+@media (prefers-color-scheme: light) {
+  body { background-color: #ffffff; color: #111; }
+  textarea, #status {
+    background-color: #f9f9f9 !important;
+    color: #111 !important;
+    border: 1px solid #ccc;
+  }
+  button {
+    background-color: #1f3b56;
+    color: #fff;
+  }
+  button:hover {
+    background-color: #163049;
+  }
+
+  body { background-color: #ffffff; color: #111; }
+  textarea, #status { background-color: #f2f2f2; color: #111 !important; }
+  button { background-color: #1f3b56; color: #fff; }
+  button:hover { background-color: #163049; }
+}
+@media (prefers-color-scheme: dark) {
+  body { background-color: #111; color: #fff; }
+  textarea, #status { background-color: #202a36; color: #fff; }
+  button { background-color: #2a6ebd; color: #fff; }
+  button:hover { background-color: #215ca3; }
+}
+  textarea, #status { background-color: #202a36; color: #fff; }
+  button { background-color: #4caf50; color: #fff; }
+  button:hover { background-color: #43a047; }
+}
+
+textarea::placeholder {
+  color: #666 !important;
+}
+
+</style>
 
 <link rel="manifest" href="manifest.json">
 <script>
@@ -71,7 +109,7 @@ if ('serviceWorker' in navigator) {
 </script>
 </head>
 <body>
-    <h1>发送到频道：收藏</h1>
+    <h1>TelePush</h1>
     <textarea id="message" placeholder="请输入消息内容..."></textarea>
     <button id="sendBtn">发送</button>
     <div id="status">状态将在此显示</div>
