@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>MarkdownV2 多功能消息发送工具</title>
+</head>
+<body style="font-family:Arial,sans-serif;padding:2em;">
+    <h2 id="title">Telegram 模板消息发送工具</h2>
+    <p id="desc">支持 MarkdownV2、模板切换、按钮添加、历史记录、本地复制。</p>
+
+    <label>语言 / Language: 
+        <select id="lang" onchange="setLanguage()">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+        </select>
+    </label>
+    <br><br>
+
+    <label id="templateLabel">选择模板：</label>
+    <select id="templateSelect" onchange="loadTemplate()" style="font-size:16px;padding:5px;">
+        <option value="surge">Surge 模块合集</option>
+        <option value="announcement">频道公告</option>
+        <option value="subscribe">订阅引导 + 按钮</option>
+        <option value="empty">自定义输入</option>
+    </select>
+
+    <br><br>
+    <textarea id="msg" rows="20" cols="60" placeholder="请输入消息内容或选择模板"></textarea>
+    <br><br>
+    <button onclick="sendMessage()" style="padding:10px 20px;font-size:16px;">发送消息</button>
+    <button onclick="copyText()" style="padding:10px 20px;font-size:16px;">复制 Markdown</button>
+    <button onclick="saveHistory()" style="padding:10px 20px;font-size:16px;">保存当前内容</button>
+
+    <p id="status" style="margin-top:1em;color:green;"></p>
+
+    <h3>历史记录</h3>
+    <ul id="historyList"></ul>
+
+    <script>
+        const templates = {
+            surge: `*Surge 模块*
+
+\`\`\`
+https://raw\.githubusercontent\.com/PoetryU/Scientist/master/Surge/Modules/gh429\.sgmodule
+\`\`\`
+
+*QuantumultX 重写资源*
+
+\`\`\`
+https://raw\.githubusercontent\.com/PoetryU/Scientist/master/QuantumultX/rewrite/gh429\.snippet
+\`\`\`
+
+*Loon Plugin*
+
+\`\`\`
+https://raw\.githubusercontent\.com/PoetryU/Scientist/master/Loon/Plugin/gh429\.plugin
+\`\`\``,
+            announcement: `*频道公告*
+
+大家好\！欢迎关注本频道\！
+
+请定期查看我们的更新内容\，如有问题可联系管理员\。`,
+            subscribe: `*订阅指南*
+
+点击下方按钮获取配置文件链接\，适用于 Surge / QuantumultX / Loon。
+
+如遇问题请查看频道固定消息或联系支持。`,
+            empty: ""
+        };
+
+        function loadTemplate() {
+            const selected = document.getElementById("templateSelect").value;
+            document.getElementById("msg").value = templates[selected];
+        }
+
+        function sendMessage() {
+            const token = "7766527131:AAGNQaNLtyrjVXjDcrqc1jYfopcy3xcd09w";
+            const chat_id = "-1002592111685";
+            const text = document.getElementById("msg").value;
+
+            let payload = {
+                chat_id: chat_id,
+                text: text,
+                parse_mode: "MarkdownV2"
+            };
+
+            if (document.getElementById("templateSelect").value === "subscribe") {
+                payload.reply_markup = JSON.stringify({
+                    inline_keyboard: [[
+                        { text: "获取订阅链接", url: "https://example.com/subscribe" },
+                        { text: "前往交流群", url: "https://t.me/yourgroup" }
+                    ]]
+                });
+            }
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: Object.keys(payload).map(key => `${key}=${encodeURIComponent(payload[key])}`).join("&")
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").textContent = data.ok
+                    ? "✅ 发送成功！" : "❌ 发送失败：" + data.description;
+            })
+            .catch(error => {
+                document.getElementById("status").textContent = "❌ 请求出错：" + error;
+            });
+        }
+
+        function copyText() {
+            const text = document.getElementById("msg").value;
+            navigator.clipboard.writeText(text).then(() => {
+                document.getElementById("status").textContent = "✅ 已复制到剪贴板";
+            });
+        }
+
+        function saveHistory() {
+            const val = document.getElementById("msg").value;
+            if (val.length > 5) {
+                const history = JSON.parse(localStorage.getItem("history") || "[]");
+                history.unshift(val);
+                if (history.length > 10) history.pop();
+                localStorage.setItem("history", JSON.stringify(history));
+                renderHistory();
+                document.getElementById("status").textContent = "✅ 已保存内容";
+            }
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem("history") || "[]");
+            const list = document.getElementById("historyList");
+            list.innerHTML = "";
+            history.forEach((item, i) => {
+                const li = document.createElement("li");
+                const btn = document.createElement("button");
+                btn.textContent = "载入";
+                btn.onclick = () => {
+                    document.getElementById("msg").value = item;
+                };
+                li.textContent = `内容 ${i+1}：`;
+                li.appendChild(btn);
+                list.appendChild(li);
+            });
+        }
+
+        function setLanguage() {
+            const lang = document.getElementById("lang").value;
+            if (lang === "zh") {
+                document.getElementById("title").textContent = "Telegram 模板消息发送工具";
+                document.getElementById("desc").textContent = "支持 MarkdownV2、模板切换、按钮添加、历史记录、本地复制。";
+                document.getElementById("templateLabel").textContent = "选择模板：";
+            } else {
+                document.getElementById("title").textContent = "Telegram Template Sender";
+                document.getElementById("desc").textContent = "Supports MarkdownV2, templates, inline buttons, history, and clipboard.";
+                document.getElementById("templateLabel").textContent = "Select template:";
+            }
+        }
+
+        window.onload = () => {
+            loadTemplate();
+            renderHistory();
+        };
+    </script>
+</body>
+</html>
