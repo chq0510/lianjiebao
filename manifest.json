@@ -1,0 +1,17 @@
+
+{
+  "name": "Telegram 消息发送器",
+  "short_name": "TG Sender",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0088cc",
+  "description": "一键发送 Telegram MarkdownV2 消息的工具",
+  "icons": [
+    {
+      "src": "https://telegram.org/img/apple-touch-icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

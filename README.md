@@ -1,3 +1,3 @@
-# Telegram Sender (Final Text Fix)
+# Telegram Sender PWA
 
-将副标题改为单行简洁排版，避免在移动端换行影响观感。
+访问网页后添加到主屏幕，即变成类原生 App，支持暗黑、美化、离线、图标等体验。
